@@ -5,6 +5,8 @@
 #include "MenuState.h"
 #include "PlayState.h"
 #include "Logger.h"
+#include "World.h"
+#include "RenderSystem.h"
 
 #include <chrono>
 
@@ -21,10 +23,13 @@ bool Application::Init() {
 
     renderer = std::make_unique<RaylibRenderAdapter>();
 
-    if (!renderer->Init(800, 600, "Engine Lab 1")) {
+    if (!renderer->Init(800, 600, "Engine Lab 2")) {
         Logger::Error("Renderer initialization failed");
         return false;
     }
+
+    world = std::make_unique<World>();
+    renderSystem = std::make_unique<RenderSystem>();
 
     ChangeState(std::make_unique<MenuState>());
 
@@ -42,8 +47,6 @@ void Application::Run() {
         deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
         lastTime = currentTime;
 
-        Logger::Info("DeltaTime: " + std::to_string(deltaTime));
-
         if (currentState) {
             currentState->Update(deltaTime, *this);
         }
@@ -52,7 +55,7 @@ void Application::Run() {
         renderer->Clear();
 
         if (currentState) {
-            currentState->Render(*renderer);
+            currentState->Render(*renderer, *this);
         }
 
         renderer->EndFrame();
@@ -64,6 +67,9 @@ void Application::Shutdown() {
         currentState->OnExit();
         currentState.reset();
     }
+
+    renderSystem.reset();
+    world.reset();
 
     if (renderer) {
         renderer->Shutdown();
@@ -91,4 +97,16 @@ void Application::ChangeStateToMenu() {
 
 void Application::ChangeStateToPlay() {
     ChangeState(std::make_unique<PlayState>());
+}
+
+World& Application::GetWorld() {
+    return *world;
+}
+
+RenderAdapter& Application::GetRenderer() {
+    return *renderer;
+}
+
+float Application::GetDeltaTime() const {
+    return deltaTime;
 }

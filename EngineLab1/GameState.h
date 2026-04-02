@@ -11,5 +11,5 @@ public:
     virtual void OnExit() = 0;
 
     virtual void Update(float deltaTime, Application& app) = 0;
-    virtual void Render(RenderAdapter& renderer) = 0;
+    virtual void Render(RenderAdapter& renderer, Application& app) = 0;
 };

@@ -20,7 +20,8 @@ void MenuState::Update(float deltaTime, Application& app) {
     }
 }
 
-void MenuState::Render(RenderAdapter& renderer) {
+void MenuState::Render(RenderAdapter& renderer, Application& app) {
+    (void)app;
     renderer.DrawTextOnScreen("MENU STATE", 300, 150, 30);
-    renderer.DrawTextOnScreen("Press ENTER to start", 240, 220, 24);
-}   
+    renderer.DrawTextOnScreen("Press ENTER to start ECS scene", 180, 220, 24);
+}

@@ -8,9 +8,11 @@ public:
 
     void BeginFrame() override;
     void Clear() override;
-    void DrawTriangle() override;
-    void DrawTextOnScreen(const std::string& text, int x, int y, int fontSize) override;
-    void EndFrame() override;
 
+    void DrawTriangle(const TransformComponent& transform, const Color4& color) override;
+    void DrawRectangle(const TransformComponent& transform, const Color4& color) override;
+    void DrawTextOnScreen(const std::string& text, int x, int y, int fontSize) override;
+
+    void EndFrame() override;
     void Shutdown() override;
 };
