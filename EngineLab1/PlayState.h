@@ -1,0 +1,10 @@
+#pragma once
+#include "GameState.h"
+
+class PlayState : public GameState {
+public:
+    void OnEnter() override;
+    void OnExit() override;
+    void Update(float deltaTime, Application& app) override;
+    void Render(RenderAdapter& renderer) override;
+};
