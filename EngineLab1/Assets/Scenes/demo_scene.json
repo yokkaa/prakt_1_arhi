@@ -1,0 +1,76 @@
+{
+  "entities": [
+    {
+      "tag": "Penguin 1",
+      "transform": {
+        "position": {
+          "x": -2.0,
+          "y": -1.0,
+          "z": 0.0
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 5.0,
+          "y": 5.0,
+          "z": 5.0
+        }
+      },
+      "meshRenderer": {
+        "mesh": "Assets/Models/cube.obj",
+        "material": "Assets/Materials/penguin_material.json"
+      }
+    },
+    {
+      "tag": "Penguin 2",
+      "transform": {
+        "position": {
+          "x": 0.0,
+          "y": -1.0,
+          "z": 0.0
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": 30.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 5.0,
+          "y": 5.0,
+          "z": 5.0
+        }
+      },
+      "meshRenderer": {
+        "mesh": "Assets/Models/cube.obj",
+        "material": "Assets/Materials/penguin_material.json"
+      }
+    },
+    {
+      "tag": "Penguin 3",
+      "transform": {
+        "position": {
+          "x": 2.0,
+          "y": -1.0,
+          "z": 0.0
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": -30.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 5.0,
+          "y": 5.0,
+          "z": 5.0
+        }
+      },
+      "meshRenderer": {
+        "mesh": "Assets/Models/cube.obj",
+        "material": "Assets/Materials/penguin_material.json"
+      }
+    }
+  ]
+}

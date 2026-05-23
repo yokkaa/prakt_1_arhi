@@ -8,11 +8,30 @@ public:
 
     void BeginFrame() override;
     void Clear() override;
+    void Begin3D() override;
+    void End3D() override;
 
     void DrawTriangle(const TransformComponent& transform, const Color4& color) override;
     void DrawRectangle(const TransformComponent& transform, const Color4& color) override;
     void DrawTextOnScreen(const std::string& text, int x, int y, int fontSize) override;
 
+    void DeleteShaderProgram(const GPUShaderProgram& shader) override;
+
+    GPUTexture CreateTexture(const TextureData& data) override;
+    GPUMesh UploadMesh(const MeshData& data) override;
+
+    GPUShaderProgram CreateShaderProgram(
+        const std::string& vertexSource,
+        const std::string& fragmentSource
+    ) override;
+
     void EndFrame() override;
     void Shutdown() override;
+
+    void DrawMesh(
+        const GPUMesh& mesh,
+        const GPUTexture& texture,
+        const GPUShaderProgram& shader,
+        const TransformComponent& transform
+    ) override;
 };

@@ -1,2 +1,36 @@
-﻿  RaylibRenderAdapter.cpp
-  EngineLab1.vcxproj -> C:\Users\hokok\source\repos\EngineLab1\x64\Debug\EngineLab1.exe
+﻿  Application.cpp
+C:\Users\tuudoshee\Desktop\prakt_1_arhi-main (5)\prakt_1_arhi-main\prakt_1_arhi-main\EngineLab1\Mesh.h(3,10): error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  (compiling source file 'Application.cpp')
+  
+  BinaryMeshLoader.cpp
+C:\Users\tuudoshee\Desktop\prakt_1_arhi-main (5)\prakt_1_arhi-main\prakt_1_arhi-main\EngineLab1\Mesh.h(3,10): error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  (compiling source file 'BinaryMeshLoader.cpp')
+  
+  Logger.cpp
+  main.cpp
+  MaterialLoader.cpp
+  MenuState.cpp
+C:\Users\tuudoshee\Desktop\prakt_1_arhi-main (5)\prakt_1_arhi-main\prakt_1_arhi-main\EngineLab1\Mesh.h(3,10): error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  (compiling source file 'MenuState.cpp')
+  
+  PlayState.cpp
+C:\Users\tuudoshee\Desktop\prakt_1_arhi-main (5)\prakt_1_arhi-main\prakt_1_arhi-main\EngineLab1\Mesh.h(3,10): error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  (compiling source file 'PlayState.cpp')
+  
+  RaylibRenderAdapter.cpp
+C:\Users\tuudoshee\Desktop\prakt_1_arhi-main (5)\prakt_1_arhi-main\prakt_1_arhi-main\EngineLab1\Mesh.h(3,10): error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  (compiling source file 'RaylibRenderAdapter.cpp')
+  
+  RenderSystem.cpp
+C:\Users\tuudoshee\Desktop\prakt_1_arhi-main (5)\prakt_1_arhi-main\prakt_1_arhi-main\EngineLab1\Mesh.h(3,10): error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  (compiling source file 'RenderSystem.cpp')
+  
+  SceneSerializer.cpp
+C:\Users\tuudoshee\Desktop\prakt_1_arhi-main (5)\prakt_1_arhi-main\prakt_1_arhi-main\EngineLab1\Mesh.h(3,10): error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  (compiling source file 'SceneSerializer.cpp')
+  
+  ShaderLoader.cpp
+  test.cpp
+  TestResourceManager.cpp
+  TextureLoader.cpp
+  Generating Code...

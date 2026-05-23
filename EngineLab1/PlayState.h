@@ -1,5 +1,7 @@
 #pragma once
+
 #include "GameState.h"
+#include "ResourceManager.h"
 
 class PlayState : public GameState {
 public:
@@ -7,4 +9,7 @@ public:
     void OnExit() override;
     void Update(float deltaTime, Application& app) override;
     void Render(RenderAdapter& renderer, Application& app) override;
+
+private:
+    ResourceManager resourceManager;
 };

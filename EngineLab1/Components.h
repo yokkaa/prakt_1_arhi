@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 
 enum class PrimitiveType {
@@ -11,6 +12,12 @@ struct Vec2 {
     float y = 0.0f;
 };
 
+struct Vec3 {
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
+};
+
 struct Color4 {
     unsigned char r = 255;
     unsigned char g = 255;
@@ -19,9 +26,9 @@ struct Color4 {
 };
 
 struct TransformComponent {
-    Vec2 position{ 0.0f, 0.0f };
-    float rotation = 0.0f;
-    Vec2 scale{ 1.0f, 1.0f };
+    Vec3 position{ 0.0f, 0.0f, 0.0f };
+    Vec3 rotation{ 0.0f, 0.0f, 0.0f };
+    Vec3 scale{ 1.0f, 1.0f, 1.0f };
 };
 
 struct Tag {
@@ -29,6 +36,6 @@ struct Tag {
 };
 
 struct MeshRendererComponent {
-    PrimitiveType primitive = PrimitiveType::Triangle;
-    Color4 color{ 255, 0, 0, 255 };
+    std::string meshPath;
+    std::string materialPath;
 };

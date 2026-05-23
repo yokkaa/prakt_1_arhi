@@ -102,11 +102,18 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)external\assimp\include;$(ProjectDir)external/stb;$(ProjectDir)external\json;$(ProjectDir)external\glm\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\tuudoshee\Downloads\prakt_1_arhi-main\prakt_1_arhi-main\external\assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc145-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "C:\Users\tuudoshee\Downloads\prakt_1_arhi-main\prakt_1_arhi-main\external\assimp\bin\x64\assimp-vc145-mt.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -116,35 +123,61 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)external\assimp\include;$(ProjectDir)external/stb;$(ProjectDir)external\json;$(ProjectDir)external\glm\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\tuudoshee\Downloads\prakt_1_arhi-main\prakt_1_arhi-main\external\assimp\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc145-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "C:\Users\tuudoshee\Downloads\prakt_1_arhi-main\prakt_1_arhi-main\external\assimp\bin\x64\assimp-vc145-mt.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BinaryMeshLoader.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MaterialLoader.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="PlayState.cpp" />
     <ClCompile Include="RaylibRenderAdapter.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="SceneSerializer.cpp" />
+    <ClCompile Include="ShaderLoader.cpp" />
+    <ClCompile Include="test.cpp" />
+    <ClCompile Include="TestResourceManager.cpp" />
+    <ClCompile Include="TextureLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="BinaryMeshLoader.h" />
     <ClInclude Include="Components.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="MaterialLoader.h" />
     <ClInclude Include="MenuState.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshLoader.h" />
     <ClInclude Include="PlayState.h" />
     <ClInclude Include="RaylibRenderAdapter.h" />
     <ClInclude Include="RenderAdapter.h" />
     <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="SceneSerializer.h" />
+    <ClInclude Include="ShaderLoader.h" />
+    <ClInclude Include="ShaderProgram.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="TextureLoader.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
