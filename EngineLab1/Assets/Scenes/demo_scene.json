@@ -1,0 +1,600 @@
+{
+    "entities": [
+        {
+            "tag": "Ground Platform",
+            "transform": {
+                "position": {
+                    "x": 0,
+                    "y": -0.25,
+                    "z": 0
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "scale": {
+                    "x": 14,
+                    "y": 0.5,
+                    "z": 14
+                }
+            },
+            "meshRenderer": {
+                "mesh": "Assets/Models/cube.obj",
+                "material": "Assets/Materials/penguin_material.json"
+            },
+            "collider": {
+                "type": "box",
+                "halfExtents": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bounciness": 0.0,
+                "friction": 0.85,
+                "isTrigger": false
+            }
+        },
+        {
+            "tag": "Player Cube",
+            "transform": {
+                "position": {
+                    "x": 0,
+                    "y": 1.5,
+                    "z": 3
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "scale": {
+                    "x": 1,
+                    "y": 1,
+                    "z": 1
+                }
+            },
+            "meshRenderer": {
+                "mesh": "Assets/Models/cube.obj",
+                "material": "Assets/Materials/penguin_material.json"
+            },
+            "rigidbody": {
+                "velocity": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "mass": 1.0,
+                "useGravity": true
+            },
+            "playerController": {
+                "moveSpeed": 5.0,
+                "jumpImpulse": 6.5,
+                "grounded": false
+            },
+            "collider": {
+                "type": "box",
+                "halfExtents": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bounciness": 0.05,
+                "friction": 0.25,
+                "isTrigger": false
+            }
+        },
+        {
+            "tag": "Falling Cube 1",
+            "transform": {
+                "position": {
+                    "x": -3,
+                    "y": 4.5,
+                    "z": -1
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 15,
+                    "z": 0
+                },
+                "scale": {
+                    "x": 1,
+                    "y": 1,
+                    "z": 1
+                }
+            },
+            "meshRenderer": {
+                "mesh": "Assets/Models/cube.obj",
+                "material": "Assets/Materials/penguin_material.json"
+            },
+            "rigidbody": {
+                "velocity": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "mass": 1.0,
+                "useGravity": true
+            },
+            "collider": {
+                "type": "box",
+                "halfExtents": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bounciness": 0.2,
+                "friction": 0.35,
+                "isTrigger": false
+            }
+        },
+        {
+            "tag": "Falling Cube 2",
+            "transform": {
+                "position": {
+                    "x": 0,
+                    "y": 6.5,
+                    "z": -2
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 35,
+                    "z": 0
+                },
+                "scale": {
+                    "x": 1,
+                    "y": 1,
+                    "z": 1
+                }
+            },
+            "meshRenderer": {
+                "mesh": "Assets/Models/cube.obj",
+                "material": "Assets/Materials/penguin_material.json"
+            },
+            "rigidbody": {
+                "velocity": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "mass": 1.2,
+                "useGravity": true
+            },
+            "collider": {
+                "type": "box",
+                "halfExtents": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bounciness": 0.2,
+                "friction": 0.35,
+                "isTrigger": false
+            }
+        },
+        {
+            "tag": "Falling Cube 3",
+            "transform": {
+                "position": {
+                    "x": 3,
+                    "y": 8.5,
+                    "z": -1
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": -25,
+                    "z": 0
+                },
+                "scale": {
+                    "x": 1,
+                    "y": 1,
+                    "z": 1
+                }
+            },
+            "meshRenderer": {
+                "mesh": "Assets/Models/cube.obj",
+                "material": "Assets/Materials/penguin_material.json"
+            },
+            "rigidbody": {
+                "velocity": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "mass": 0.8,
+                "useGravity": true
+            },
+            "collider": {
+                "type": "box",
+                "halfExtents": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bounciness": 0.2,
+                "friction": 0.35,
+                "isTrigger": false
+            }
+        },
+        {
+            "tag": "Falling Cube 4",
+            "transform": {
+                "position": {
+                    "x": 2,
+                    "y": 5.5,
+                    "z": 2
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 45,
+                    "z": 0
+                },
+                "scale": {
+                    "x": 1,
+                    "y": 1,
+                    "z": 1
+                }
+            },
+            "meshRenderer": {
+                "mesh": "Assets/Models/cube.obj",
+                "material": "Assets/Materials/penguin_material.json"
+            },
+            "rigidbody": {
+                "velocity": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "mass": 1.0,
+                "useGravity": true
+            },
+            "collider": {
+                "type": "box",
+                "halfExtents": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bounciness": 0.2,
+                "friction": 0.35,
+                "isTrigger": false
+            }
+        },
+        {
+            "tag": "Static Obstacle Left",
+            "transform": {
+                "position": {
+                    "x": -4,
+                    "y": 0.75,
+                    "z": 2
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "scale": {
+                    "x": 1.5,
+                    "y": 1.5,
+                    "z": 1.5
+                }
+            },
+            "meshRenderer": {
+                "mesh": "Assets/Models/cube.obj",
+                "material": "Assets/Materials/penguin_material.json"
+            },
+            "collider": {
+                "type": "box",
+                "halfExtents": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bounciness": 0.0,
+                "friction": 0.65,
+                "isTrigger": false
+            }
+        },
+        {
+            "tag": "Static Obstacle Right",
+            "transform": {
+                "position": {
+                    "x": 4,
+                    "y": 0.5,
+                    "z": 1
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "scale": {
+                    "x": 1,
+                    "y": 1,
+                    "z": 2
+                }
+            },
+            "meshRenderer": {
+                "mesh": "Assets/Models/cube.obj",
+                "material": "Assets/Materials/penguin_material.json"
+            },
+            "collider": {
+                "type": "box",
+                "halfExtents": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bounciness": 0.0,
+                "friction": 0.65,
+                "isTrigger": false
+            }
+        },
+        {
+            "tag": "Static Wall Back",
+            "transform": {
+                "position": {
+                    "x": 0,
+                    "y": 0.75,
+                    "z": -5
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "scale": {
+                    "x": 6,
+                    "y": 1.5,
+                    "z": 0.5
+                }
+            },
+            "meshRenderer": {
+                "mesh": "Assets/Models/cube.obj",
+                "material": "Assets/Materials/penguin_material.json"
+            },
+            "collider": {
+                "type": "box",
+                "halfExtents": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bounciness": 0.0,
+                "friction": 0.65,
+                "isTrigger": false
+            }
+        },
+        {
+            "tag": "Static Small Block",
+            "transform": {
+                "position": {
+                    "x": -1.8,
+                    "y": 0.35,
+                    "z": -3
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "scale": {
+                    "x": 0.7,
+                    "y": 0.7,
+                    "z": 0.7
+                }
+            },
+            "meshRenderer": {
+                "mesh": "Assets/Models/cube.obj",
+                "material": "Assets/Materials/penguin_material.json"
+            },
+            "collider": {
+                "type": "box",
+                "halfExtents": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bounciness": 0.0,
+                "friction": 0.65,
+                "isTrigger": false
+            }
+        },
+        {
+            "tag": "Sphere Collider Demo",
+            "transform": {
+                "position": {
+                    "x": 5,
+                    "y": 3.5,
+                    "z": -2
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "scale": {
+                    "x": 1,
+                    "y": 1,
+                    "z": 1
+                }
+            },
+            "meshRenderer": {
+                "mesh": "Assets/Models/cube.obj",
+                "material": "Assets/Materials/penguin_material.json"
+            },
+            "rigidbody": {
+                "velocity": {
+                    "x": -1.5,
+                    "y": 0,
+                    "z": 1.0
+                },
+                "acceleration": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "mass": 0.6,
+                "useGravity": true
+            },
+            "collider": {
+                "type": "sphere",
+                "halfExtents": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bounciness": 0.75,
+                "friction": 0.08,
+                "isTrigger": false
+            }
+        },
+        {
+            "tag": "Trigger Zone",
+            "transform": {
+                "position": {
+                    "x": 0,
+                    "y": 0.5,
+                    "z": -1.5
+                },
+                "rotation": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "scale": {
+                    "x": 2.5,
+                    "y": 1.0,
+                    "z": 2.5
+                }
+            },
+            "meshRenderer": {
+                "mesh": "Assets/Models/cube.obj",
+                "material": "Assets/Materials/penguin_material.json"
+            },
+            "collider": {
+                "type": "box",
+                "halfExtents": {
+                    "x": 0.5,
+                    "y": 0.5,
+                    "z": 0.5
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "bounciness": 0.0,
+                "friction": 0.0,
+                "isTrigger": true
+            }
+        },
+        {
+            "tag": "Main Camera",
+            "camera": {
+                "position": {
+                    "x": 0,
+                    "y": 4.0,
+                    "z": 10.0
+                },
+                "forward": {
+                    "x": 0,
+                    "y": -0.3,
+                    "z": -1.0
+                },
+                "up": {
+                    "x": 0,
+                    "y": 1.0,
+                    "z": 0
+                },
+                "fov": 45.0,
+                "aspectRatio": 1.3333334,
+                "nearPlane": 0.1,
+                "farPlane": 100.0,
+                "yaw": -90.0,
+                "pitch": -15.0,
+                "active": true
+            }
+        }
+    ]
+}

@@ -2,7 +2,7 @@
 #include "RenderAdapter.h"
 #include "Logger.h"
 #include "Application.h"
-#include "raylib.h"
+#include "InputManager.h"
 
 void MenuState::OnEnter() {
     Logger::Info("Entered MenuState");
@@ -15,7 +15,9 @@ void MenuState::OnExit() {
 void MenuState::Update(float deltaTime, Application& app) {
     (void)deltaTime;
 
-    if (IsKeyPressed(KEY_ENTER)) {
+    InputManager& input = app.GetInput();
+
+    if (input.IsActionPressed("Start")) {
         app.ChangeStateToPlay();
     }
 }

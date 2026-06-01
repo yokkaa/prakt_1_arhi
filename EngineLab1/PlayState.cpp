@@ -1,11 +1,19 @@
 #include "PlayState.h"
+#include "SceneSerializer.h"
+
 #include "RenderAdapter.h"
 #include "Logger.h"
 #include "Application.h"
 #include "World.h"
 #include "RenderSystem.h"
-#include "raylib.h"
+#include "PhysicsSystem.h"
+#include "InputManager.h"
+#include "DebugRenderSystem.h"
+#include "CameraSystem.h"
+#include "PlayerControlSystem.h"
+
 #include <cmath>
+#include <string>
 
 namespace {
     bool sceneCreated = false;
@@ -18,6 +26,7 @@ void PlayState::OnEnter() {
     sceneCreated = false;
     movingEntity = INVALID_ENTITY;
     movementTime = 0.0f;
+    debugCollidersEnabled = false;
 }
 
 void PlayState::OnExit() {
@@ -28,42 +37,92 @@ void PlayState::Update(float deltaTime, Application& app) {
     World& world = app.GetWorld();
 
     if (!sceneCreated) {
-        Entity e1 = world.CreateEntity();
-        world.AddTag(e1, { "Red Triangle" });
-        world.AddTransform(e1, { {200.0f, 300.0f}, 0.0f, {1.0f, 1.0f} });
-        world.AddMeshRenderer(e1, { PrimitiveType::Triangle, {255, 0, 0, 255} });
+        SceneSerializer::LoadScene(
+            "Assets/Scenes/demo_scene.json",
+            world,
+            resourceManager,
+            app.GetRenderer()
+        );
 
-        Entity e2 = world.CreateEntity();
-        world.AddTag(e2, { "Blue Rectangle" });
-        world.AddTransform(e2, { {420.0f, 300.0f}, 0.0f, {1.0f, 1.0f} });
-        world.AddMeshRenderer(e2, { PrimitiveType::Rectangle, {0, 120, 255, 255} });
+        bool hasCamera = false;
+        for (Entity entity : world.GetEntities()) {
+            if (world.HasCamera(entity)) {
+                hasCamera = true;
+                break;
+            }
+        }
 
-        Entity e3 = world.CreateEntity();
-        world.AddTag(e3, { "Green Triangle" });
-        world.AddTransform(e3, { {620.0f, 250.0f}, 0.0f, {0.8f, 0.8f} });
-        world.AddMeshRenderer(e3, { PrimitiveType::Triangle, {0, 200, 100, 255} });
+        if (!hasCamera) {
+            Entity cameraEntity = world.CreateEntity();
+            world.AddTag(cameraEntity, Tag{ "Main Camera" });
+            world.AddCamera(cameraEntity, CameraComponent{});
+        }
 
-        movingEntity = e3;
+        cameraSystem.Update(world, app.GetInput(), app.GetRenderer(), 0.0f);
+
         sceneCreated = true;
     }
 
-    if (IsKeyPressed(KEY_ESCAPE)) {
+    InputManager& input = app.GetInput();
+
+    if (input.IsActionPressed("BackToMenu")) {
         app.ChangeStateToMenu();
         return;
     }
 
+    if (input.IsActionPressed("SaveScene")) {
+        SceneSerializer::SaveScene(
+            "Assets/Scenes/saved_scene.json",
+            world
+        );
+    }
+
+    if (input.IsActionPressed("ToggleDebugColliders")) {
+        debugCollidersEnabled = !debugCollidersEnabled;
+        Logger::Info(
+            std::string("Debug collision rendering ") +
+            (debugCollidersEnabled ? "enabled" : "disabled")
+        );
+    }
+
+    playerControlSystem.Update(world, input, deltaTime);
+    physicsSystem.Update(world, deltaTime, &app.GetEventBus());
+    cameraSystem.Update(world, input, app.GetRenderer(), deltaTime);
+
     if (movingEntity != INVALID_ENTITY && world.HasTransform(movingEntity)) {
         movementTime += deltaTime;
+
         TransformComponent& transform = world.GetTransform(movingEntity);
-        transform.position.y = 250.0f + std::sinf(movementTime * 2.0f) * 50.0f;
+        transform.rotation.y += deltaTime * 45.0f;
     }
 }
 
 void PlayState::Render(RenderAdapter& renderer, Application& app) {
-    renderer.DrawTextOnScreen("PLAY STATE (ECS)", 240, 20, 30);
-    renderer.DrawTextOnScreen("Three entities with different transforms", 150, 60, 22);
-    renderer.DrawTextOnScreen("ESC - return to menu", 250, 90, 20);
+    resourceManager.ReloadChangedShaders(renderer);
+
+    renderer.Begin3D();
 
     RenderSystem renderSystem;
-    renderSystem.Update(app.GetWorld(), renderer, app.GetDeltaTime());
+    renderSystem.Update(
+        app.GetWorld(),
+        renderer,
+        resourceManager,
+        app.GetDeltaTime()
+    );
+
+    if (debugCollidersEnabled) {
+        debugRenderSystem.RenderColliders(app.GetWorld(), renderer);
+    }
+
+    renderer.End3D();
+
+    renderer.DrawTextOnScreen("DEMO SCENE: PHYSICS + INPUT + DEBUG", 95, 20, 30);
+    renderer.DrawTextOnScreen("WASD + Space - control Player Cube", 145, 60, 20);
+    renderer.DrawTextOnScreen("Arrows/QE - camera, hold RMB - look, Shift - faster", 70, 90, 20);
+    renderer.DrawTextOnScreen("F3 - debug colliders/triggers, F5 - save scene, ESC - menu", 80, 120, 20);
+    renderer.DrawTextOnScreen("Green sphere = SphereCollider, yellow = Trigger Zone", 105, 150, 20);
+
+    if (debugCollidersEnabled) {
+        renderer.DrawTextOnScreen("DEBUG COLLIDERS: ON", 20, 550, 20);
+    }
 }

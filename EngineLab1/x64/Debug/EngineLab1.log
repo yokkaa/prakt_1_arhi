@@ -1,2 +1,26 @@
-﻿  RaylibRenderAdapter.cpp
-  EngineLab1.vcxproj -> C:\Users\hokok\source\repos\EngineLab1\x64\Debug\EngineLab1.exe
+﻿  Application.cpp
+  CameraSystem.cpp
+  DebugRenderSystem.cpp
+  BinaryMeshLoader.cpp
+  InputManager.cpp
+  Logger.cpp
+  main.cpp
+  MaterialLoader.cpp
+  MenuState.cpp
+  PlayState.cpp
+  PhysicsSystem.cpp
+  PlayerControlSystem.cpp
+  RaylibRenderAdapter.cpp
+  RenderSystem.cpp
+  SceneSerializer.cpp
+  ShaderLoader.cpp
+  test.cpp
+  TestResourceManager.cpp
+  TextureLoader.cpp
+  Generating Code...
+  LINK : C:\Users\tuudoshee\Downloads\prakt_1_arhi_self_work_physics_extensions\prakt_1_arhi-main (5) #U2014 #U043a#U043e#U043f#U0438#U044f\prakt_1_arhi-main\prakt_1_arhi-main\x64\Debug\EngineLab1.exe not found or not built by the last incremental link; performing full link
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  EngineLab1.vcxproj -> C:\Users\tuudoshee\Downloads\prakt_1_arhi_self_work_physics_extensions\prakt_1_arhi-main (5) #U2014 #U043a#U043e#U043f#U0438#U044f\prakt_1_arhi-main\prakt_1_arhi-main\x64\Debug\EngineLab1.exe
+  "pwsh.exe" не является внутренней или внешней
+  командой, исполняемой программой или пакетным файлом.
+  Скопировано файлов:         1.

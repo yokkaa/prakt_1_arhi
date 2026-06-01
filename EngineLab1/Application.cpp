@@ -7,8 +7,13 @@
 #include "Logger.h"
 #include "World.h"
 #include "RenderSystem.h"
+#include "InputManager.h"
+#include "EventBus.h"
+#include "CollisionEvent.h"
+#include "TriggerEvent.h"
 
 #include <chrono>
+#include <string>
 
 Application::Application()
     : isRunning(false), deltaTime(0.0f) {
@@ -30,6 +35,56 @@ bool Application::Init() {
 
     world = std::make_unique<World>();
     renderSystem = std::make_unique<RenderSystem>();
+    inputManager = std::make_unique<InputManager>();
+    eventBus = std::make_unique<EventBus>();
+
+    inputManager->BindAction("Start", KeyCode::KEY_ENTER);
+    inputManager->BindAction("BackToMenu", KeyCode::KEY_ESCAPE);
+    inputManager->BindAction("SaveScene", KeyCode::KEY_F5);
+    inputManager->BindAction("ToggleDebugColliders", KeyCode::KEY_F3);
+    inputManager->BindAction("CameraForward", KeyCode::KEY_UP);
+    inputManager->BindAction("CameraBackward", KeyCode::KEY_DOWN);
+    inputManager->BindAction("CameraLeft", KeyCode::KEY_LEFT);
+    inputManager->BindAction("CameraRight", KeyCode::KEY_RIGHT);
+    inputManager->BindAction("CameraUp", KeyCode::KEY_E);
+    inputManager->BindAction("CameraDown", KeyCode::KEY_Q);
+    inputManager->BindAction("CameraLook", KeyCode::MOUSE_RIGHT);
+
+    inputManager->BindAction("PlayerForward", KeyCode::KEY_W);
+    inputManager->BindAction("PlayerBackward", KeyCode::KEY_S);
+    inputManager->BindAction("PlayerLeft", KeyCode::KEY_A);
+    inputManager->BindAction("PlayerRight", KeyCode::KEY_D);
+    inputManager->BindAction("PlayerJump", KeyCode::KEY_SPACE);
+
+    auto getEntityName = [this](Entity entity) {
+        if (world && world->HasTag(entity)) {
+            return world->GetTag(entity).name;
+        }
+
+        return std::string("Entity #") + std::to_string(entity);
+    };
+
+    eventBus->Subscribe<CollisionEvent>(
+        [getEntityName](const CollisionEvent& event) {
+            Logger::Info(
+                "Collision detected between " +
+                getEntityName(event.entityA) +
+                " and " +
+                getEntityName(event.entityB)
+            );
+        }
+    );
+
+    eventBus->Subscribe<TriggerEvent>(
+        [getEntityName](const TriggerEvent& event) {
+            Logger::Info(
+                "Trigger entered: " +
+                getEntityName(event.triggerEntity) +
+                " with " +
+                getEntityName(event.otherEntity)
+            );
+        }
+    );
 
     ChangeState(std::make_unique<MenuState>());
 
@@ -46,6 +101,10 @@ void Application::Run() {
         auto currentTime = clock::now();
         deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
         lastTime = currentTime;
+
+        if (inputManager) {
+            inputManager->UpdateState();
+        }
 
         if (currentState) {
             currentState->Update(deltaTime, *this);
@@ -68,6 +127,8 @@ void Application::Shutdown() {
         currentState.reset();
     }
 
+    eventBus.reset();
+    inputManager.reset();
     renderSystem.reset();
     world.reset();
 
@@ -105,6 +166,14 @@ World& Application::GetWorld() {
 
 RenderAdapter& Application::GetRenderer() {
     return *renderer;
+}
+
+InputManager& Application::GetInput() {
+    return *inputManager;
+}
+
+EventBus& Application::GetEventBus() {
+    return *eventBus;
 }
 
 float Application::GetDeltaTime() const {

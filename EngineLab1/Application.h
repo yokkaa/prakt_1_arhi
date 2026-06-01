@@ -5,6 +5,8 @@ class RenderAdapter;
 class GameState;
 class World;
 class RenderSystem;
+class InputManager;
+class EventBus;
 
 class Application {
 public:
@@ -21,6 +23,8 @@ public:
 
     World& GetWorld();
     RenderAdapter& GetRenderer();
+    InputManager& GetInput();
+    EventBus& GetEventBus();
     float GetDeltaTime() const;
 
 private:
@@ -28,6 +32,8 @@ private:
     std::unique_ptr<GameState> currentState;
     std::unique_ptr<World> world;
     std::unique_ptr<RenderSystem> renderSystem;
+    std::unique_ptr<InputManager> inputManager;
+    std::unique_ptr<EventBus> eventBus;
 
     bool isRunning;
     float deltaTime;
