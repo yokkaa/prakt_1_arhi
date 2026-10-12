@@ -1,5 +1,7 @@
 #pragma once
+
 #include <memory>
+#include "JobSystem.h"
 
 class RenderAdapter;
 class GameState;
@@ -27,7 +29,12 @@ public:
     EventBus& GetEventBus();
     float GetDeltaTime() const;
 
+    JobSystem& GetJobs() {
+        return *jobSystem;
+    }
+
 private:
+    std::unique_ptr<JobSystem> jobSystem;
     std::unique_ptr<RenderAdapter> renderer;
     std::unique_ptr<GameState> currentState;
     std::unique_ptr<World> world;

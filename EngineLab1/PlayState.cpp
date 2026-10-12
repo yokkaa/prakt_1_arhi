@@ -34,6 +34,8 @@ void PlayState::OnExit() {
 }
 
 void PlayState::Update(float deltaTime, Application& app) {
+    resourceManager.SetJobSystem(app.GetJobs());
+
     World& world = app.GetWorld();
 
     if (!sceneCreated) {
@@ -98,6 +100,9 @@ void PlayState::Update(float deltaTime, Application& app) {
 }
 
 void PlayState::Render(RenderAdapter& renderer, Application& app) {
+    resourceManager.PumpMeshUploads(renderer);
+    resourceManager.PumpTextureUploads(renderer);
+
     resourceManager.ReloadChangedShaders(renderer);
 
     renderer.Begin3D();

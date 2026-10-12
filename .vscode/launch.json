@@ -6,9 +6,9 @@
             "type": "cppvsdbg",
             "request": "launch",
             "program": "${workspaceFolder}\\x64\\Release\\EngineLab1.exe",
+            "cwd": "${workspaceFolder}\\EngineLab1",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}\\EngineLab1",
             "environment": [],
             "externalConsole": false,
             "preLaunchTask": "Build Engine Release"

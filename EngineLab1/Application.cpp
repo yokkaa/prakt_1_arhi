@@ -26,6 +26,23 @@ Application::~Application() {
 bool Application::Init() {
     Logger::Info("Application initialization started");
 
+        jobSystem = std::make_unique<JobSystem>();
+
+    Logger::Info(
+        "JobSystem started. Workers: " +
+        std::to_string(jobSystem->GetWorkerCount())
+    );
+
+    // Короткая проверка передачи задачи рабочему потоку.
+    auto startupJob = jobSystem->Submit([]() {
+        return 6 * 7;
+    });
+
+    Logger::Info(
+        "JobSystem startup check: " +
+        std::to_string(startupJob.get())
+    );
+
     renderer = std::make_unique<RaylibRenderAdapter>();
 
     if (!renderer->Init(800, 600, "Engine Lab 2")) {
@@ -122,6 +139,9 @@ void Application::Run() {
 }
 
 void Application::Shutdown() {
+        if (jobSystem) {
+        jobSystem->Shutdown();
+    }
     if (currentState) {
         currentState->OnExit();
         currentState.reset();
