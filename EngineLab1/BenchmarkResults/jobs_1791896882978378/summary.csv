@@ -1,0 +1,3 @@
+mode,metric,samples,median_ms,p95_ms,p99_ms
+jobs,frame,430,19.930500,64.349200,76.521100
+jobs,preparation,430,0.389950,0.886600,2.890200

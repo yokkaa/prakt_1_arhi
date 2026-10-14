@@ -8,10 +8,14 @@
 #include <mutex>
 #include <queue>
 #include <stdexcept>
+#include <string>
 #include <thread>
 #include <type_traits>
 #include <utility>
 #include <vector>
+
+#include "tracy/Tracy.hpp"
+#include "common/TracySystem.hpp"
 
 class JobSystem {
 public:
@@ -24,7 +28,6 @@ public:
                 ? hardwareThreads - 1
                 : 1;
 
-            // Пока ограничиваем пул восемью рабочими потоками.
             if (workerCount > 8) {
                 workerCount = 8;
             }
@@ -32,8 +35,8 @@ public:
 
         try {
             for (std::size_t i = 0; i < workerCount; ++i) {
-                workers.emplace_back([this]() {
-                    WorkerLoop();
+                workers.emplace_back([this, i]() {
+                    WorkerLoop(i);
                 });
             }
         }
@@ -49,12 +52,16 @@ public:
 
     JobSystem(const JobSystem&) = delete;
     JobSystem& operator=(const JobSystem&) = delete;
+
     JobSystem(JobSystem&&) = delete;
     JobSystem& operator=(JobSystem&&) = delete;
 
     template <typename Function>
     auto Submit(Function&& function)
-        -> std::future<std::invoke_result_t<std::decay_t<Function>&>> {
+        -> std::future<
+            std::invoke_result_t<std::decay_t<Function>&>
+        > {
+        ZoneScopedN("JobSystem::Submit");
 
         using Result =
             std::invoke_result_t<std::decay_t<Function>&>;
@@ -80,12 +87,15 @@ public:
         }
 
         wakeCondition.notify_one();
+
         return result;
     }
 
     // Вызывать из главного потока.
-    // Выполняет уже принятые задачи и присоединяет рабочие потоки.
+    // Завершает принятые задачи и присоединяет потоки.
     void Shutdown() {
+        ZoneScopedN("JobSystem::Shutdown");
+
         {
             std::lock_guard<std::mutex> lock(queueMutex);
             stopping = true;
@@ -108,11 +118,20 @@ public:
     }
 
 private:
-    void WorkerLoop() {
+    void WorkerLoop(std::size_t workerIndex) {
+        const std::string workerName =
+            "Job Worker " + std::to_string(workerIndex + 1);
+
+        tracy::SetThreadName(workerName.c_str());
+
         while (true) {
             std::function<void()> job;
 
             {
+                // Включает ожидание блокировки и новой задачи.
+                // Длинная зона здесь может означать простой потока.
+                ZoneScopedN("JobSystem::WaitForJob");
+
                 std::unique_lock<std::mutex> lock(queueMutex);
 
                 wakeCondition.wait(lock, [this]() {
@@ -127,10 +146,13 @@ private:
                 jobs.pop();
             }
 
-            // Выполняем вне блокировки: остальные потоки
-            // могут одновременно забирать другие задачи.
-            // packaged_task сохраняет исключения в future.
-            job();
+            {
+                // Реальное выполнение задачи вне блокировки.
+                ZoneScopedN("JobSystem::Execute");
+
+                // packaged_task сохраняет исключение в future.
+                job();
+            }
         }
     }
 
@@ -139,5 +161,6 @@ private:
 
     std::mutex queueMutex;
     std::condition_variable wakeCondition;
+
     bool stopping = false;
 };

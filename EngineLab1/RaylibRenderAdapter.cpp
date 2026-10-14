@@ -1,18 +1,32 @@
 #include "RaylibRenderAdapter.h"
+#include "RenderPreparation.h"
+
 #include "raylib.h"
 #include "rlgl.h"
-#include <cstddef>
-#include <cmath>
 #include "raymath.h"
 
-static Color ToRaylibColor(const Color4& c) {
-    return Color{ c.r, c.g, c.b, c.a };
+#include <cstddef>
+#include <cmath>
+#include <vector>
+
+static Color ToRaylibColor(const Color4& color) {
+    return Color{
+        color.r,
+        color.g,
+        color.b,
+        color.a
+    };
 }
 
-bool RaylibRenderAdapter::Init(int width, int height, const std::string& title) {
+bool RaylibRenderAdapter::Init(
+    int width,
+    int height,
+    const std::string& title
+) {
     InitWindow(width, height, title.c_str());
     SetExitKey(KEY_NULL);
-    SetTargetFPS(60);
+    SetTargetFPS(0);
+
     return true;
 }
 
@@ -28,30 +42,41 @@ void RaylibRenderAdapter::Clear() {
     ClearBackground(RAYWHITE);
 }
 
-void RaylibRenderAdapter::DrawTriangle(const TransformComponent& transform, const Color4& color) {
-    float size = 60.0f * transform.scale.x;
+void RaylibRenderAdapter::DrawTriangle(
+    const TransformComponent& transform,
+    const Color4& color
+) {
+    const float size = 60.0f * transform.scale.x;
 
-    Vector2 top{
+    const Vector2 top{
         transform.position.x,
         transform.position.y - size
     };
 
-    Vector2 left{
+    const Vector2 left{
         transform.position.x - size,
         transform.position.y + size
     };
 
-    Vector2 right{
+    const Vector2 right{
         transform.position.x + size,
         transform.position.y + size
     };
 
-    ::DrawTriangle(top, left, right, ToRaylibColor(color));
+    ::DrawTriangle(
+        top,
+        left,
+        right,
+        ToRaylibColor(color)
+    );
 }
 
-void RaylibRenderAdapter::DrawRectangle(const TransformComponent& transform, const Color4& color) {
-    float width = 120.0f * transform.scale.x;
-    float height = 80.0f * transform.scale.y;
+void RaylibRenderAdapter::DrawRectangle(
+    const TransformComponent& transform,
+    const Color4& color
+) {
+    const float width = 120.0f * transform.scale.x;
+    const float height = 80.0f * transform.scale.y;
 
     ::DrawRectangle(
         static_cast<int>(transform.position.x - width / 2.0f),
@@ -62,7 +87,10 @@ void RaylibRenderAdapter::DrawRectangle(const TransformComponent& transform, con
     );
 }
 
-void RaylibRenderAdapter::DrawDebugAABB(const AABB& aabb, const Color4& color) {
+void RaylibRenderAdapter::DrawDebugAABB(
+    const AABB& aabb,
+    const Color4& color
+) {
     const Vector3 center{
         aabb.center.x,
         aabb.center.y,
@@ -77,25 +105,49 @@ void RaylibRenderAdapter::DrawDebugAABB(const AABB& aabb, const Color4& color) {
 
     rlDisableBackfaceCulling();
     rlSetLineWidth(2.0f);
+
     DrawCubeWiresV(center, size, ToRaylibColor(color));
+
     rlSetLineWidth(1.0f);
     rlEnableBackfaceCulling();
 }
 
-void RaylibRenderAdapter::DrawDebugSphere(const Vec3& center, float radius, const Color4& color) {
-    const Vector3 sphereCenter{ center.x, center.y, center.z };
+void RaylibRenderAdapter::DrawDebugSphere(
+    const Vec3& center,
+    float radius,
+    const Color4& color
+) {
+    const Vector3 sphereCenter{
+        center.x,
+        center.y,
+        center.z
+    };
 
     rlDisableBackfaceCulling();
     rlSetLineWidth(2.0f);
-    DrawSphereWires(sphereCenter, radius, 16, 16, ToRaylibColor(color));
+
+    DrawSphereWires(
+        sphereCenter,
+        radius,
+        16,
+        16,
+        ToRaylibColor(color)
+    );
+
     rlSetLineWidth(1.0f);
     rlEnableBackfaceCulling();
 }
 
-GPUTexture RaylibRenderAdapter::CreateTexture(const TextureData& data) {
-    GPUTexture gpuTexture;
+GPUTexture RaylibRenderAdapter::CreateTexture(
+    const TextureData& data
+) {
+    GPUTexture gpuTexture{};
 
-    if (data.Pixels.empty() || data.Width <= 0 || data.Height <= 0) {
+    if (
+        data.Pixels.empty() ||
+        data.Width <= 0 ||
+        data.Height <= 0
+    ) {
         return gpuTexture;
     }
 
@@ -104,9 +156,12 @@ GPUTexture RaylibRenderAdapter::CreateTexture(const TextureData& data) {
     if (data.Channels == 1) {
         format = RL_PIXELFORMAT_UNCOMPRESSED_GRAYSCALE;
     }
+    else if (data.Channels == 2) {
+    format = RL_PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA;
+}
     else if (data.Channels == 3) {
-        format = RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8;
-    }
+    format = RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8;
+}
     else if (data.Channels == 4) {
         format = RL_PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
     }
@@ -130,7 +185,7 @@ GPUShaderProgram RaylibRenderAdapter::CreateShaderProgram(
     const std::string& vertexSource,
     const std::string& fragmentSource
 ) {
-    GPUShaderProgram program;
+    GPUShaderProgram program{};
 
     if (vertexSource.empty() || fragmentSource.empty()) {
         return program;
@@ -142,24 +197,37 @@ GPUShaderProgram RaylibRenderAdapter::CreateShaderProgram(
     );
 
     if (program.ID == 0) {
-        TraceLog(LOG_ERROR, "Failed to compile shader program");
+        TraceLog(
+            LOG_ERROR,
+            "Failed to compile shader program"
+        );
     }
     else {
-        TraceLog(LOG_INFO, "Shader program compiled successfully. ID: %u", program.ID);
+        TraceLog(
+            LOG_INFO,
+            "Shader program compiled successfully. ID: %u",
+            program.ID
+        );
     }
 
     return program;
 }
 
-GPUMesh RaylibRenderAdapter::UploadMesh(const MeshData& data) {
-    GPUMesh gpuMesh;
+GPUMesh RaylibRenderAdapter::UploadMesh(
+    const MeshData& data
+) {
+    GPUMesh gpuMesh{};
 
     if (data.Vertices.empty() || data.Indices.empty()) {
         return gpuMesh;
     }
 
     if (data.Vertices.size() > 65535) {
-        TraceLog(LOG_ERROR, "Mesh has too many vertices for unsigned short indices");
+        TraceLog(
+            LOG_ERROR,
+            "Mesh has too many vertices for unsigned short indices"
+        );
+
         return gpuMesh;
     }
 
@@ -167,7 +235,9 @@ GPUMesh RaylibRenderAdapter::UploadMesh(const MeshData& data) {
     indices16.reserve(data.Indices.size());
 
     for (unsigned int index : data.Indices) {
-        indices16.push_back(static_cast<unsigned short>(index));
+        indices16.push_back(
+            static_cast<unsigned short>(index)
+        );
     }
 
     gpuMesh.IndexCount = indices16.size();
@@ -177,13 +247,17 @@ GPUMesh RaylibRenderAdapter::UploadMesh(const MeshData& data) {
 
     gpuMesh.VBO = rlLoadVertexBuffer(
         data.Vertices.data(),
-        static_cast<int>(data.Vertices.size() * sizeof(Vertex)),
+        static_cast<int>(
+            data.Vertices.size() * sizeof(Vertex)
+        ),
         false
     );
 
     gpuMesh.EBO = rlLoadVertexBufferElement(
         indices16.data(),
-        static_cast<int>(indices16.size() * sizeof(unsigned short)),
+        static_cast<int>(
+            indices16.size() * sizeof(unsigned short)
+        ),
         false
     );
 
@@ -193,7 +267,7 @@ GPUMesh RaylibRenderAdapter::UploadMesh(const MeshData& data) {
         RL_FLOAT,
         false,
         sizeof(Vertex),
-        (int)offsetof(Vertex, Position)
+        static_cast<int>(offsetof(Vertex, Position))
     );
     rlEnableVertexAttribute(0);
 
@@ -203,7 +277,7 @@ GPUMesh RaylibRenderAdapter::UploadMesh(const MeshData& data) {
         RL_FLOAT,
         false,
         sizeof(Vertex),
-        (int)offsetof(Vertex, Normal)
+        static_cast<int>(offsetof(Vertex, Normal))
     );
     rlEnableVertexAttribute(1);
 
@@ -213,7 +287,7 @@ GPUMesh RaylibRenderAdapter::UploadMesh(const MeshData& data) {
         RL_FLOAT,
         false,
         sizeof(Vertex),
-        (int)offsetof(Vertex, TexCoords)
+        static_cast<int>(offsetof(Vertex, TexCoords))
     );
     rlEnableVertexAttribute(2);
 
@@ -222,13 +296,35 @@ GPUMesh RaylibRenderAdapter::UploadMesh(const MeshData& data) {
     return gpuMesh;
 }
 
+// Сохраняем прежний способ вызова.
+// Он рассчитывает матрицу и передаёт её новому методу.
 void RaylibRenderAdapter::DrawMesh(
     const GPUMesh& mesh,
     const GPUTexture& texture,
     const GPUShaderProgram& shader,
     const TransformComponent& transform
 ) {
-    if (mesh.VAO == 0 || mesh.IndexCount == 0 || shader.ID == 0) {
+    DrawPreparedMesh(
+        mesh,
+        texture,
+        shader,
+        BuildModelMatrix(transform)
+    );
+}
+
+// Вызывать из главного потока.
+// Матрица объекта уже рассчитана до начала отрисовки.
+void RaylibRenderAdapter::DrawPreparedMesh(
+    const GPUMesh& mesh,
+    const GPUTexture& texture,
+    const GPUShaderProgram& shader,
+    const PreparedModelMatrix& model
+) {
+    if (
+        mesh.VAO == 0 ||
+        mesh.IndexCount == 0 ||
+        shader.ID == 0
+    ) {
         return;
     }
 
@@ -238,44 +334,40 @@ void RaylibRenderAdapter::DrawMesh(
         rlActiveTextureSlot(0);
         rlEnableTexture(texture.ID);
 
-        int textureLocation = rlGetLocationUniform(shader.ID, "texture0");
-        int textureSlot = 0;
-        rlSetUniform(textureLocation, &textureSlot, RL_SHADER_UNIFORM_INT, 1);
+        const int textureLocation = rlGetLocationUniform(
+            shader.ID,
+            "texture0"
+        );
+
+        const int textureSlot = 0;
+
+        rlSetUniform(
+            textureLocation,
+            &textureSlot,
+            RL_SHADER_UNIFORM_INT,
+            1
+        );
     }
 
-    Matrix matScale = MatrixScale(
-        transform.scale.x,
-        transform.scale.y,
-        transform.scale.z
+    const Matrix matModel = ToRaylibMatrix(model);
+    const Matrix matView = rlGetMatrixModelview();
+    const Matrix matProjection = rlGetMatrixProjection();
+
+    const Matrix matModelView = MatrixMultiply(
+        matModel,
+        matView
     );
 
-    Matrix matRotX = MatrixRotateX(transform.rotation.x * DEG2RAD);
-    Matrix matRotY = MatrixRotateY(transform.rotation.y * DEG2RAD);
-    Matrix matRotZ = MatrixRotateZ(transform.rotation.z * DEG2RAD);
-
-    Matrix matTranslation = MatrixTranslate(
-        transform.position.x,
-        transform.position.y,
-        transform.position.z
+    const Matrix matMVP = MatrixMultiply(
+        matModelView,
+        matProjection
     );
 
-    Matrix matRotation = MatrixMultiply(
-        MatrixMultiply(matRotX, matRotY),
-        matRotZ
+    const int mvpLocation = rlGetLocationUniform(
+        shader.ID,
+        "mvp"
     );
 
-    Matrix matModel = MatrixMultiply(
-        MatrixMultiply(matScale, matRotation),
-        matTranslation
-    );
-
-    Matrix matView = rlGetMatrixModelview();
-    Matrix matProjection = rlGetMatrixProjection();
-
-    Matrix matModelView = MatrixMultiply(matModel, matView);
-    Matrix matMVP = MatrixMultiply(matModelView, matProjection);
-
-    int mvpLocation = rlGetLocationUniform(shader.ID, "mvp");
     rlSetUniformMatrix(mvpLocation, matMVP);
 
     rlEnableVertexArray(mesh.VAO);
@@ -295,18 +387,46 @@ void RaylibRenderAdapter::DrawMesh(
     rlEnableShader(rlGetShaderIdDefault());
 }
 
-void RaylibRenderAdapter::DeleteShaderProgram(const GPUShaderProgram& shader) {
+void RaylibRenderAdapter::DeleteMesh(
+    const GPUMesh& mesh
+) {
+    if (mesh.VAO != 0) {
+        rlUnloadVertexArray(mesh.VAO);
+    }
+
+    if (mesh.VBO != 0) {
+        rlUnloadVertexBuffer(mesh.VBO);
+    }
+
+    if (mesh.EBO != 0) {
+        rlUnloadVertexBuffer(mesh.EBO);
+    }
+}
+
+void RaylibRenderAdapter::DeleteTexture(
+    const GPUTexture& texture
+) {
+    if (texture.ID != 0) {
+        rlUnloadTexture(texture.ID);
+    }
+}
+
+void RaylibRenderAdapter::DeleteShaderProgram(
+    const GPUShaderProgram& shader
+) {
     if (shader.ID != 0) {
         rlUnloadShaderProgram(shader.ID);
     }
 }
 
-void RaylibRenderAdapter::SetCamera(const CameraComponent& camera) {
+void RaylibRenderAdapter::SetCamera(
+    const CameraComponent& camera
+) {
     activeCamera = camera;
 }
 
 void RaylibRenderAdapter::Begin3D() {
-    Camera3D camera = { 0 };
+    Camera3D camera{};
 
     camera.position = Vector3{
         activeCamera.position.x,
@@ -336,8 +456,19 @@ void RaylibRenderAdapter::End3D() {
     EndMode3D();
 }
 
-void RaylibRenderAdapter::DrawTextOnScreen(const std::string& text, int x, int y, int fontSize) {
-    DrawText(text.c_str(), x, y, fontSize, BLACK);
+void RaylibRenderAdapter::DrawTextOnScreen(
+    const std::string& text,
+    int x,
+    int y,
+    int fontSize
+) {
+    DrawText(
+        text.c_str(),
+        x,
+        y,
+        fontSize,
+        BLACK
+    );
 }
 
 void RaylibRenderAdapter::EndFrame() {
@@ -347,4 +478,3 @@ void RaylibRenderAdapter::EndFrame() {
 void RaylibRenderAdapter::Shutdown() {
     CloseWindow();
 }
-

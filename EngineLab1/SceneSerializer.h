@@ -13,6 +13,13 @@ public:
         World& world
     );
 
+    // Только чтение файла и создание CPU-данных.
+    static bool LoadSceneCPU(
+        const std::string& path,
+        World& world
+    );
+
+    // Сохраняем прежний интерфейс для существующего кода.
     static bool LoadScene(
         const std::string& path,
         World& world,

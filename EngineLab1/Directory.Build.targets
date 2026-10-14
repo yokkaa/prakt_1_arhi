@@ -1,0 +1,36 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <EngineTracyRoot>$(MSBuildThisFileDirectory)..\external\tracy\</EngineTracyRoot>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(EngineTracyRoot)public;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>TRACY_ENABLE;TRACY_ON_DEMAND;TRACY_NO_SYSTEM_TRACING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+
+    <Link>
+      <AdditionalDependencies>ws2_32.lib;dbghelp.lib;secur32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <ClCompile Include="$(EngineTracyRoot)public\TracyClient.cpp">
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+
+  <Target Name="CheckEngineTracy" BeforeTargets="PrepareForBuild">
+    <Error
+      Condition="!Exists('$(EngineTracyRoot)public\TracyClient.cpp')"
+      Text="TracyClient.cpp not found. Check external\tracy\public\TracyClient.cpp"
+    />
+
+    <Message
+      Importance="high"
+      Text="Tracy profiling enabled"
+    />
+  </Target>
+
+</Project>

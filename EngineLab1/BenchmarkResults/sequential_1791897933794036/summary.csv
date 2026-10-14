@@ -1,0 +1,3 @@
+mode,metric,samples,median_ms,p95_ms,p99_ms
+sequential,frame,589,16.905800,17.983100,18.249700
+sequential,preparation,589,0.994700,1.133400,1.241200

@@ -148,11 +148,9 @@ bool SceneSerializer::SaveScene(
     return true;
 }
 
-bool SceneSerializer::LoadScene(
+bool SceneSerializer::LoadSceneCPU(
     const std::string& path,
-    World& world,
-    ResourceManager& resourceManager,
-    RenderAdapter& renderer
+    World& world
 ) {
     std::ifstream file(path);
 
@@ -211,13 +209,6 @@ bool SceneSerializer::LoadScene(
 
             world.AddMeshRenderer(entity, meshRenderer);
 
-            if (!meshRenderer.meshPath.empty()) {
-                resourceManager.LoadMeshAsync(meshRenderer.meshPath, renderer);
-            }
-
-            if (!meshRenderer.materialPath.empty()) {
-                resourceManager.LoadMaterial(meshRenderer.materialPath, renderer);
-            }
         }
 
         if (entityJson.contains("camera")) {
@@ -304,6 +295,35 @@ bool SceneSerializer::LoadScene(
     }
 
     std::cout << "Scene loaded: " << path << std::endl;
+
+    return true;
+}
+
+bool SceneSerializer::LoadScene(
+    const std::string& path,
+    World& world,
+    ResourceManager& resourceManager,
+    RenderAdapter& renderer
+) {
+    if (!LoadSceneCPU(path, world)) {
+        return false;
+    }
+
+    for (Entity entity : world.GetEntities()) {
+        if (!world.HasMeshRenderer(entity)) {
+            continue;
+        }
+
+        const auto& component = world.GetMeshRenderer(entity);
+
+        if (!component.meshPath.empty()) {
+            resourceManager.LoadMeshAsync(component.meshPath, renderer);
+        }
+
+        if (!component.materialPath.empty()) {
+            resourceManager.LoadMaterial(component.materialPath, renderer);
+        }
+    }
 
     return true;
 }

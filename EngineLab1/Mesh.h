@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include <glm/glm.hpp> // для vec3, vec2
+#include <glm/glm.hpp> // пїЅпїЅпїЅ vec3, vec2
 #include <memory>
 
 struct Vertex {
@@ -15,10 +15,10 @@ struct MeshData {
 };
 
 struct GPUMesh {
-    unsigned int VAO;       // Vertex Array Object
-    unsigned int VBO;       // Vertex Buffer Object
-    unsigned int EBO;       // Element Buffer Object
-    size_t IndexCount;      // Количество индексов
+    unsigned int VAO = 0;
+    unsigned int VBO = 0;
+    unsigned int EBO = 0;
+    size_t IndexCount = 0;
 };
 
 struct EngineMesh {

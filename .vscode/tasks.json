@@ -21,6 +21,21 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "Run Engine Release",
+            "type": "process",
+            "command": "${workspaceFolder}\\x64\\Release\\EngineLab1.exe",
+            "options": {
+                "cwd": "${workspaceFolder}\\EngineLab1"
+            },
+            "dependsOn": "Build Engine Release",
+            "dependsOrder": "sequence",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+            }
         }
     ]
 }
